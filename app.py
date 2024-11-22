@@ -6,7 +6,6 @@ from playsound import playsound
 
 app = Flask(__name__)
 
-# Global variable to hold the video source
 video_source = 0  # Default to local webcam
 motion_thread = None  # Thread for motion detection
 stop_thread = False  # Flag to control the motion detection thread
@@ -15,13 +14,11 @@ import threading
 
 # Function to play sound in a separate thread
 def play_sound_async(sound_file):
-    # Define a thread to play the sound asynchronously
-    # Cooldown mechanism to limit sound playback
     if not hasattr(play_sound_async, "last_played"):
         play_sound_async.last_played = 0
 
     current_time = time.time()
-    if current_time - play_sound_async.last_played >= 1 :  # 0.2 seconds cooldown (5 times per second)
+    if current_time - play_sound_async.last_played >= 2 :  # Cooldown, change here!
         play_sound_async.last_played = current_time
         threading.Thread(target=playsound, args=(sound_file,), daemon=True).start()
 
@@ -64,19 +61,19 @@ def generate_frames():
             (x, y, w, h) = cv2.boundingRect(contour)
             cv2.rectangle(current_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        # Check if significant motion persists for 0.5 seconds
+        # Check if motion is "significant"
         if significant_motion:
             if not motion_flag:
                 motion_flag = True
                 motion_start_time = time.time()
             elif time.time() - motion_start_time >= 0.25:
-                play_sound_async('C:/Users/Shumy/Downloads/WhatsApp Video 2024-11-11 at 10.48.05.mp3')
-                print("Significant motion detected for 0.5 seconds!")
+                play_sound_async('chime-notification-alert_C_major.mp3')
+                print("Significant motion detected for 0.25 seconds!")
         else:
             motion_flag = False
             motion_start_time = None
 
-        # Encode the frame as JPEG and yield
+        # Encode the frame as JPEG and do browser magic
         ret, buffer = cv2.imencode('.jpg', current_frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'

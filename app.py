@@ -49,6 +49,8 @@ def generate_frames():
         # Perform frame differencing
         frame_diff = cv2.absdiff(previous_frame, current_gray)
         _, thresh = cv2.threshold(frame_diff, 5, 255, cv2.THRESH_BINARY)
+        # LOOK HERE ! If a lot of false positives are happening, change the "thresh" value to a higher number
+        # Usually if your room is brighter than mine was at testing (I tested in a cave)
 
         # Detect contours
         contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)

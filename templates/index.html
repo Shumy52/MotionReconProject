@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Feed</title>
+</head>
+<body>
+    <h1>Live Camera Feed</h1>
+
+    <!-- Form to accept a custom video feed URL -->
+    <form action="/set_feed" method="post">
+        <label for="feed_url">Enter video feed URL:</label>
+        <input type="text" id="feed_url" name="feed_url" placeholder="Enter URL here">
+        <button type="submit">Start Monitoring</button>
+    </form>
+
+    <!-- Display the video feed -->
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+</body>
+</html>

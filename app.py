@@ -21,7 +21,7 @@ def play_sound_async(sound_file):
         play_sound_async.last_played = 0
 
     current_time = time.time()
-    if current_time - play_sound_async.last_played >= 1 :  # 0.2 seconds cooldown (5 times per second)
+    if current_time - play_sound_async.last_played >= 2 :  # 0.2 seconds cooldown (5 times per second)
         play_sound_async.last_played = current_time
         threading.Thread(target=playsound, args=(sound_file,), daemon=True).start()
 
@@ -70,8 +70,8 @@ def generate_frames():
                 motion_flag = True
                 motion_start_time = time.time()
             elif time.time() - motion_start_time >= 0.25:
-                play_sound_async('C:/Users/Shumy/Downloads/WhatsApp Video 2024-11-11 at 10.48.05.mp3')
-                print("Significant motion detected for 0.5 seconds!")
+                play_sound_async('chime-notification-alert_C_major.mp3')
+                print("Significant motion detected for 0.25 seconds!")
         else:
             motion_flag = False
             motion_start_time = None
